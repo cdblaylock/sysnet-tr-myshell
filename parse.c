@@ -176,7 +176,7 @@ int printError(int type, int num)
 	
 	if(type == 1)
 	{
-		switch(number)
+		switch(num)
 		{
 			case 0:
 				fprintf(stderr,"myshell: process forking: forking has failed. Terminating...");

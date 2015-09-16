@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 		
 		// Setup for Forking
 		pid_t childPID;
+		int status;
 		
 		// Print the Prompt
 		printf ("$$$ ");
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
 		fgets(buffer, BUFFSZE, stdin);
 		
 		// Breaks the Input into Tokens
-		foundError = storeToken(&command, tokenizer(buffer, token), token);
+		foundError = storeTokens(&command, tokenizer(buffer, token), token);
 		
 		// Tokenizer Returned an Error Get a New Command
 		if(foundError != 0)
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
 			{
 				// Foreground Process
 				if(command.background != 1)
-					waitpid(childPID, NULL, 0);
+					waitpid(childPID, &status, 0);
 			}
 		}
 		else 
