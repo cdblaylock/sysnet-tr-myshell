@@ -237,7 +237,7 @@ int waitOnChildren()
 	pid_t pid;
 	int status;
 	
-	printf("Waiting for children...\n");
+	printf("myshell: waiting for children...\n");
 	while(1){
 		// Wait for Children
 		pid = wait(&status);
@@ -268,7 +268,7 @@ void setToNull(Param_t * param)
 	param->background = 0;             
 	param->argumentCount = 0;   
 	
-	for(i = 0; i < param->argumentCount; i++)
+	for(i = 0; i < MAXARGS; i++)
 		param->argumentVector[i] = NULL;    
 	
 	return;
