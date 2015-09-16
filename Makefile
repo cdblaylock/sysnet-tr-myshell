@@ -10,7 +10,7 @@ parse: parse.o
 myshell: myshell.o
 	$(CC) $(CFLAGS) -o myshell myshell.o
 slow: slow.o
-	$(CC) $(CFLAGS) -o myshell myshell.o
+	$(CC) $(CFLAGS) -o slow slow.o
 
 slow.o: slow.c
 parse.o: parse.c parse.h 
