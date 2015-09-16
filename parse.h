@@ -1,8 +1,6 @@
 /*
 Changes:
-I commented the code, made sure all the functions are in the header file, put all the error messages i could into 
-the errorPrint function, put the slow program into the make file, and got rid of anything that didnt belog in the program.
-DID NOT TEST YET.
+Fixed errors that kept code from running. 
 */
 /** @file   parse.h
  *  @brief  Function prototypes for the command line parser of the shell.
@@ -78,7 +76,7 @@ int tokenChecker (Param_t * param, char *token);
  *
  *@return       returns either a -1 for input error or a 0 for fork or child error.
  */
-int printError(int type, number);
+int printError(int type, int number);
 
 /**
  *@brief       			Checks to see if the token passed into the function is 
