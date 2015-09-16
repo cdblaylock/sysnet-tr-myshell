@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
 {
 	// Buffer to Hold User Input
 	char buffer[BUFFSZE];
+	char *token[MAXARGS];
 	
 	// Create a new Parameter Structure
     Param_t command = {NULL, NULL, 0, 0};
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
 		fgets(buffer, BUFFSZE, stdin);
 		
 		// Breaks the Input into Tokens
-		foundError = tokenizer(buffer, &command);
+		foundError = storeToken(&command, tokenizer(buffer, token), token);
 		
 		// Tokenizer Returned an Error Get a New Command
 		if(foundError != 0)

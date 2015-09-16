@@ -16,31 +16,21 @@
 #include "parse.h"
 
 // Breaks String into Tokens
-int tokenizer(char *str, Param_t * param)
+int tokenizer(char *str, char **token)
 {
-	int foundError = 0;
+	// Delimiters
+	char *separators = "' ''\n''\t'";
 	int i = 0;
 	
-	// Stores the Tokens & Delimiters
-	char *token[MAXARGS];
-	char *separators = "' ''\n''\t'";
-
 	// Break Text into Tokens
 	token[i] = strtok(str, separators);
 	while(token[i] != NULL)
 	{
 		i++;
-		// Get a New Token
 	   	token[i] = strtok(NULL, separators);
   	}
 	
-	// Store the Tokens into the Param
-	foundError = storeTokens(param, i, token);
-	
-	if(foundError != 0)
-		return -1;
-	
-	return 0;
+	return i;
 }
 
 int errorChecker(Param_t * param, int numOftokens, char **token)
