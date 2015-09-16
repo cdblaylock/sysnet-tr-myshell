@@ -136,7 +136,7 @@ int tokenChecker (Param_t * param, char *token)
 }
 
 //Prints error messages to the screen
-int printError(int type, number)
+int printError(int type, int number)
 {
 	//IF the error has to do with invalid input.
 	if(type == 0)
@@ -227,7 +227,7 @@ void executeCommand(Param_t *param)
 {
 	// Redirects Input to Filename
 	if(param->inputRedirect != NULL)
-		freopen(param.inputRedirect, "r", stdin);
+		freopen(param->inputRedirect, "r", stdin);
 	
 	// Redirects Output to Filename
 	if(param->outputRedirect != NULL)
