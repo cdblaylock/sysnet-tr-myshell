@@ -33,11 +33,6 @@ int tokenizer(char *str, char **token)
 	return i;
 }
 
-int errorChecker(Param_t * param, int numOftokens, char **token)
-{
-	
-}
-
 // Function Stores the Tokens in the Param
 int storeTokens(Param_t * param, int numOftokens, char **token)
 {
@@ -132,51 +127,6 @@ int tokenChecker (Param_t * param, char *token)
 	return 0;
 }
 
-int printError(int type, number)
-{
-	if(type == 0)
-	{
-		fprintf(stderr,"myshell: incorrect command format: ");
-		
-		switch(number)
-		{
-			case 0:
-				fprintf(stderr,"Can only have |&| AFTER input redirection |<| OR output redirection |>|.");
-				break;
-			case 1:
-				fprintf(stderr,"MULTIPLE |>| output redirections.");
-				break;
-			case 2:
-				fprintf(stderr,"MULTIPLE |<| input redirections.");
-				break;
-			case 3:
-				fprintf(stderr,"Spaces NOT allowed after |>|.");
-				break;
-			case 4:
-				fprintf(stderr,"Output redirection |>| detected BEFORE input redirection |>|.");
-				break;
-			case 5:
-				fprintf(stderr,"|&| Can be used ONCE, and it must be the LAST argument.");
-				break;
-		}
-		fprintf(stderr,"\n");
-	}
-	
-	if(type == 1)
-	{
-		switch(number)
-		{
-			case 0:
-				fprintf(stderr,"myshell: Process Forking: Forking has FAILED. Terminating...\n");
-			case 1:
-		}
-		fprintf(stderr,"\n");
-		return 0;
-	}
-	
-	return -1;
-}
-
 // Function to Determine If We Detected Background
 int backgroundChecker(Param_t * param, int index, int numOftokens, char *token)
 {
@@ -192,6 +142,53 @@ int backgroundChecker(Param_t * param, int index, int numOftokens, char *token)
 	}
 	return 0;
 }
+
+// Print the Errors Detected & Return Appropriate Values
+int printError(int type, int num)
+{
+	if(type == 0)
+	{
+		fprintf(stderr,"myshell: incorrect command format: ");
+		
+		switch(num)
+		{
+			case 0:
+				fprintf(stderr,"can only have |&| after input redirection |<| or output redirection |>|.");
+				break;
+			case 1:
+				fprintf(stderr,"multiple |>| output redirections.");
+				break;
+			case 2:
+				fprintf(stderr,"multiple |<| input redirections.");
+				break;
+			case 3:
+				fprintf(stderr,"spaces not allowed after |>| or |<|.");
+				break;
+			case 4:
+				fprintf(stderr,"output redirection |>| detected before input redirection |>|.");
+				break;
+			case 5:
+				fprintf(stderr,"|&| can be used once, and it must be the last argument.");
+				break;
+		}
+		fprintf(stderr,"\n");
+	}
+	
+	if(type == 1)
+	{
+		switch(number)
+		{
+			case 0:
+				fprintf(stderr,"myshell: process forking: forking has failed. Terminating...");
+				break;
+		}
+		fprintf(stderr,"\n");
+		return 0;
+	}
+	
+	return -1;
+}
+
 
 // Function Prints the Parameters of the Structure to the Screen
 void printParams(Param_t * param)
@@ -216,7 +213,7 @@ void executeCommand(Param_t *param)
 {
 	// Redirects Input to Filename
 	if(param->inputRedirect != NULL)
-		freopen(param.inputRedirect, "r", stdin);
+		freopen(param->inputRedirect, "r", stdin);
 	
 	// Redirects Output to Filename
 	if(param->outputRedirect != NULL)
@@ -264,18 +261,15 @@ int waitOnChildren()
 // Function Resets All Values of the Structure to NULL or 0.
 void setToNull(Param_t * param)
 {
-	int i;
+	int i = 0;
 	
 	param->inputRedirect = NULL;    
 	param->outputRedirect = NULL;
-	
-	for(i = 0; i < param->argumentCount; i++)
-	{
-		param->argumentVector[i] = NULL;
-	}       
-	
 	param->background = 0;             
 	param->argumentCount = 0;   
-
+	
+	for(i = 0; i < param->argumentCount; i++)
+		param->argumentVector[i] = NULL;    
+	
 	return;
 }

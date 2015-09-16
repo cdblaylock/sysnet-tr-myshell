@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 	
 	// Create a new Parameter Structure
     Param_t command = {NULL, NULL, 0, 0};
+	setToNull(&command);
 	
 	int exitStatus = 0;
 	
@@ -78,9 +79,9 @@ int main(int argc, char *argv[])
 			exitStatus = waitOnChildren();
 			
 			if (exitStatus == 0)
-				printf("Children Terminated Successfully. \n");
+				fprintf(stderr,"myshell: children terminated successfully.\n");
 			else
-				fprintf(stderr,"Child did not terminate properly!\n");
+				fprintf(stderr,"myshell: child did not terminate properly!\n");
 			
 			// Resets the Structure
 			setToNull(&command);
@@ -90,13 +91,12 @@ int main(int argc, char *argv[])
 		// Fork
 		childPID = fork();
 		
-		// Forked Successfully?
+		// Forked Successfully
 		if(childPID >= 0)
 		{
 			// Child Process
 			if(childPID == 0)
 				executeCommand(&command);
-			// Parent Process
 			else
 			{
 				// Foreground Process
@@ -104,7 +104,6 @@ int main(int argc, char *argv[])
 					waitpid(childPID, NULL, 0);
 			}
 		}
-		// Fork Has Failed. Terminate
 		else 
 			return printError(1, 0);
 		

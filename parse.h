@@ -34,31 +34,33 @@ struct PARAM
 typedef struct PARAM Param_t;
 
 /**
- *@brief       			Breaks entered text into tokens.
+ *@brief       			Breaks entered text into tokens using the delimiters in the function
+ *						and returns the number of tokens.
  *
  *@param entry 			The entered text from the command line.
  *@param param 			The structure that the tokens will be stored.
+ *
+ *@return				returns the number of tokens.
  */
-int tokenizer(char *str, Param_t *param);
+int tokenizer(char *str, char **token);
 
 /**
  *@brief         		Stores the tokens into the correct place in the struct.
  *               		This function is called in the tokenizer function.
- *
- *@param param   		The structure that the tokens will be stored.
- *@param counter 		The number of tokens that were created.
- *@param token   		The tokens that are being stored in the struct.
+ *@param param			The param structure.
+ *@param numOftokens	The number of tokens.
+ *@param token   		Pointer to the array of tokens.
  *
  *@return 				0 on successfully completion. -1 when error is detected.
  */
-int storeTokens(Param_t *param, int counter, char **token);
+int storeTokens(Param_t * param, int numOftokens, char **token);
 
 /**
  *@brief       			Checks to see if the token should be stored in outputRedirect or inputRedirect.  
  *             			This function is called in the storeTokens function.
  *
- *@param token 			The token that is being compared.
  *@param param 			The structure that the token is being stored in.
+ *@param token 			The token that is being compared.
  *
  *@return 				0 on successfully completion. -1 when error is detected.
  */
@@ -72,13 +74,24 @@ int tokenChecker (Param_t * param, char *token);
  *						an error.
  *
  *@param param 			The structure that the token is being stored in.
- *@param token 			The token that is being compared.
  *@param index			The current token we are on.
  *@param numOftokens	Number of tokens total.
+ *@param token 			The token that is being compared.
  *
  *@return 		0 on successfully completion. -1 when error is detected.
  */
 int backgroundChecker(Param_t * param, int index, int numOftokens, char *token);
+
+
+/**
+ *@brief      			Prints the structure when the program is booted in -Debug mode.
+ *
+ *@param type			the type of error encountered 0 for command format, 1 for process error.
+ *@param num			the integer number error to display
+ * 
+ *@return				Returns a 0 for type 1 process error -1 to indicate error all other times.
+ */
+int printError(int type, int num);
 
 /**
  *@brief      			Prints the structure when the program is booted in -Debug mode.
@@ -87,6 +100,11 @@ int backgroundChecker(Param_t * param, int index, int numOftokens, char *token);
  */
 void printParams(Param_t *param);
 
+
+/**
+ *@brief      			Function for a process to execute a command.
+ */
+void executeCommand(Param_t *param)
 
 /**
  *@brief      			Function will wait on children
