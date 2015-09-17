@@ -58,10 +58,18 @@ int main(int argc, char *argv[])
 		// Breaks the Input into Tokens
 		foundError = storeTokens(&command, tokenizer(buffer, token), token);
 		
-		// Tokenizer Returned an Error Get a New Command
-		if(foundError != 0)
+		if(command.argumentCount == 0)
 		{
-			fprintf(stderr,"myshell: Format: command [argument1] [argument2] [<inputfile] [>outputfile] [&]\n");
+			setToNull(&command);
+			continue;
+		}
+		
+		// Found Error or No Arguments
+		if( (foundError != 0) || (command.argumentCount == 0) )
+		{
+			if(command.argumentCount != 0)
+				fprintf(stderr,"myshell: Format: command [argument1] [argument2] [<inputfile] [>outputfile] [&]\n");
+			
 			setToNull(&command);
 			continue;
 		}
