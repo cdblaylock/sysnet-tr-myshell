@@ -47,10 +47,12 @@ int storeTokens(Param_t * param, int numOftokens, char **token)
 			foundError = tokenChecker(param, token[j]);
 		else
 		{
-			// Store in ArgumentVector
-			param->argumentVector[param->argumentCount] = token[j]; 
-			param->argumentCount++;
-			
+			if (token[j][0] != '&')
+			{
+				// Store in ArgumentVector
+				param->argumentVector[param->argumentCount] = token[j]; 
+				param->argumentCount++;
+			}
 			// Error Checking Prevent Arguments
 			if( (param->inputRedirect != NULL) || (param->outputRedirect != NULL) )
 			{
@@ -60,28 +62,26 @@ int storeTokens(Param_t * param, int numOftokens, char **token)
 				if(param->background == 1)
 					break;
 				else
-				{
 					// Detected Argument After <Input or >Output
-					printError(0, 0);
-					return -1;
-				}
+					return printError(0, 0);
 			}
+			//calls the function to check if '&' is the last token
 			foundError = backgroundChecker(param, j, numOftokens, token[j]);
 				
 			// Found Background Break
 			if(param->background == 1)
 				break;
 		}
-		
+		//if an error was found
 		if(foundError != 0)
 				return -1;
-	
+		//token is incremented
 		j++;
 	}
-	
+	//if an error was found
 	if(foundError != 0)
 		return -1;
-	
+	//if there were no errors
 	return 0;
 }
 
@@ -146,6 +146,7 @@ int backgroundChecker(Param_t * param, int index, int numOftokens, char *token)
 // Print the Errors Detected & Return Appropriate Values
 int printError(int type, int num)
 {
+	//If the error has to do with invalid input.
 	if(type == 0)
 	{
 		fprintf(stderr,"myshell: incorrect command format: ");
@@ -173,7 +174,7 @@ int printError(int type, int num)
 		}
 		fprintf(stderr,"\n");
 	}
-	
+	//If the error message has to do with failed forking or child termination.
 	if(type == 1)
 	{
 		switch(num)
@@ -221,7 +222,7 @@ void executeCommand(Param_t *param)
 		freopen(param->outputRedirect, "w", stdout);
 		freopen(param->outputRedirect, "w", stderr);
 	}
-	
+	//executing the user input
 	execvp(param->argumentVector[0], param->argumentVector);
 	
 	// Command Did Not Execute Successfully (Terminate Process)
