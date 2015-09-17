@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     Param_t command = {NULL, NULL, 0, 0};
 	setToNull(&command);
 	
-	int exitStatus = 0;
+	int exitStatus = 0, error = 0;
 	
 	// Myshell Command Loop (Terminates when 'exit' is entered)
 	while(strcmp(buffer, "exit") != 0)
@@ -105,7 +105,9 @@ int main(int argc, char *argv[])
 		{
 			// Child Process
 			if(childPID == 0)
-				executeCommand(&command);
+				error = executeCommand(&command);
+			if (error == -1)
+				return 0;
 			else
 			{
 				// Foreground Process
