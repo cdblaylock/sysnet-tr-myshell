@@ -210,7 +210,7 @@ void printParams(Param_t * param)
 }
 
 // Function to Execute the Command
-void executeCommand(Param_t *param)
+int executeCommand(Param_t *param)
 {
 	// Redirects Input to Filename
 	if(param->inputRedirect != NULL)
@@ -228,7 +228,7 @@ void executeCommand(Param_t *param)
 	// Command Did Not Execute Successfully (Terminate Process)
 	fprintf(stderr,"myshell: command not found.\n");
 	
-	return;
+	return -1;
 }
 
 // Function to Wait on Children
