@@ -22,7 +22,7 @@
  *  This is the entry point for myshell where
  *	we will prompt the user to enter any command
  *  tokenize the input create a new process and 
- *	eixexecute the command based on the argument of the
+ *	execute the command based on the argument of the
  *	command.
  *
  * @return 	will return 0 upon successful completion of
@@ -87,8 +87,10 @@ int main(int argc, char *argv[])
 		{
 			exitStatus = waitOnChildren();
 			
+			// Children Terminated Correctly
 			if (exitStatus == 0)
 				fprintf(stderr,"myshell: children terminated successfully.\n");
+			// There was an Error with a child's termination
 			else
 				fprintf(stderr,"myshell: child did not terminate properly!\n");
 			
@@ -103,11 +105,14 @@ int main(int argc, char *argv[])
 		// Forked Successfully
 		if(childPID >= 0)
 		{
-			// Child Process
+			// Child Process Executing the Command
 			if(childPID == 0)
+			{
 				error = executeCommand(&command);
-			if (error == -1)
-				return 0;
+			
+				if (error == -1)
+					return 0;
+			}
 			else
 			{
 				// Foreground Process
@@ -115,6 +120,7 @@ int main(int argc, char *argv[])
 					waitpid(childPID, &status, 0);
 			}
 		}
+		// Forking Has Failed Printer Error and Return
 		else 
 			return printError(1, 0);
 		

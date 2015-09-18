@@ -104,7 +104,7 @@ void printParams(Param_t *param);
 /**
  *@brief      			Function for a process to execute a command.
  *
- *@param param 			The structure that is being printed to the screen.
+ *@param param 			The structure that contains the parameters of the command.
  *@return               Returns -1 if exec did not work properly.
  */
 int executeCommand(Param_t *param);
