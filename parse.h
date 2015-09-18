@@ -103,13 +103,16 @@ void printParams(Param_t *param);
 
 /**
  *@brief      			Function for a process to execute a command.
+ *
+ *@param param 			The structure that is being printed to the screen.
+ *@return               Returns -1 if exec did not work properly.
  */
 int executeCommand(Param_t *param);
 
 /**
  *@brief      			Function will wait on children
  *
- *@return				The structure that is being printed to the screen.
+ *@return				Returns -1 if the children did not terminate successfully and 0 if they did.
  */
 int waitOnChildren();
 
