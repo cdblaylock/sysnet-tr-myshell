@@ -22,7 +22,7 @@
  *  This is the entry point for myshell where
  *	we will prompt the user to enter any command
  *  tokenize the input create a new process and 
- *	eixexecute the command based on the argument of the
+ *	execute the command based on the argument of the
  *	command.
  *
  * @return 	will return 0 upon successful completion of
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     Param_t command = {NULL, NULL, 0, 0};
 	setToNull(&command);
 	
-	int exitStatus = 0;
+	int exitStatus = 0, error = 0;
 	
 	// Myshell Command Loop (Terminates when 'exit' is entered)
 	while(strcmp(buffer, "exit") != 0)
@@ -85,10 +85,12 @@ int main(int argc, char *argv[])
 		// Exit Before Forking Again
 		if( strcmp(command.argumentVector[0], "exit") == 0)
 		{
+			//waiting on children to terminate
 			exitStatus = waitOnChildren();
-			
+			//children terminated correctly
 			if (exitStatus == 0)
 				fprintf(stderr,"myshell: children terminated successfully.\n");
+			//there was an error with a child's termination
 			else
 				fprintf(stderr,"myshell: child did not terminate properly!\n");
 			
@@ -103,9 +105,12 @@ int main(int argc, char *argv[])
 		// Forked Successfully
 		if(childPID >= 0)
 		{
-			// Child Process
+			// Child Process executing the entered commands
 			if(childPID == 0)
-				executeCommand(&command);
+				error = executeCommand(&command);
+			//if there was an error with execution return
+			if (error == -1)
+				return 0;
 			else
 			{
 				// Foreground Process
@@ -113,6 +118,7 @@ int main(int argc, char *argv[])
 					waitpid(childPID, &status, 0);
 			}
 		}
+		//forking failed print error and return from function
 		else 
 			return printError(1, 0);
 		
