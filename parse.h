@@ -104,7 +104,7 @@ void printParams(Param_t *param);
 /**
  *@brief      			Function for a process to execute a command.
  */
-void executeCommand(Param_t *param);
+int executeCommand(Param_t *param);
 
 /**
  *@brief      			Function will wait on children
