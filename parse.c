@@ -29,7 +29,7 @@ int tokenizer(char *str, char **token)
 		i++;
 	   	token[i] = strtok(NULL, separators);
   	}
-	
+	//return number of tokens.
 	return i;
 }
 
@@ -94,13 +94,13 @@ int tokenChecker (Param_t * param, char *token)
 		// Error Multiple Output Redirections
 		if(param->outputRedirect != NULL)
 			return printError(0, 1);
-			
+		//increment token	
 		token++;
 		
 		// Error Space After Output Redirection Character [< filename]
 		if(token[0] == '\0')
 			return printError(0, 3);
-			
+		//insert token into structure	
 		param->outputRedirect = token;
 	}
 	// Input Redirection Detected
@@ -116,14 +116,16 @@ int tokenChecker (Param_t * param, char *token)
 			else
 				return printError(0, 2);
 		}
+		//increment token
 		token++;
 		
 		// Error Space After Input Redirection Character [< filename]
 		if(token[0] == '\0')
 			return printError(0, 3);
-			
+		//insert token into structure
 		param->inputRedirect = token;
 	}
+	//function was successful
 	return 0;
 }
 
@@ -140,6 +142,7 @@ int backgroundChecker(Param_t * param, int index, int numOftokens, char *token)
 		// Last Token is '&' Set Background
 		param->background = 1;
 	}
+	//function was successful
 	return 0;
 }
 
@@ -210,7 +213,7 @@ void printParams(Param_t * param)
 }
 
 // Function to Execute the Command
-void executeCommand(Param_t *param)
+int executeCommand(Param_t *param)
 {
 	// Redirects Input to Filename
 	if(param->inputRedirect != NULL)
@@ -227,8 +230,8 @@ void executeCommand(Param_t *param)
 	
 	// Command Did Not Execute Successfully (Terminate Process)
 	fprintf(stderr,"myshell: command not found.\n");
-	
-	return;
+	//return -1 if exec did not work correctly
+	return -1;
 }
 
 // Function to Wait on Children
@@ -256,6 +259,7 @@ int waitOnChildren()
 				return -1;
 		}
 	}
+	//function was successful
 	return 0;
 }
 
